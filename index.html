@@ -34,8 +34,55 @@
       max-width: 680px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.08);
       min-height: 80px;
-      display: flex;
- 11A4 nhân ngày 20/10</p>
+      display: flex;align-items: center;
+      justify-content: center;
+    }
+    input, button, textarea {
+      font-size: 0.95em;
+      border-radius: 8px;
+      padding: 8px;
+      border: 1px solid #f8c8dc;
+      margin: 4px 2px;
+    }
+    button {
+      background: #ff85a2;
+      color: white;
+      cursor: pointer;
+      border: none;
+      transition: 0.22s;
+    }
+    button:hover {
+      background: #ff4f79;
+      transform: translateY(-2px);
+    }
+    .flower {
+      position: fixed;
+      top: -50px;
+      font-size: 20px;
+      pointer-events: none;
+      animation: fall linear forwards;
+    }
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+    /* List panel */
+    #toggleListBtn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: #ffb6c1;
+      border: none;
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      z-index: 1100;
+    }
+    #toggleListBtn:hover { background: #ff4f79; }
+    #listPanel {
+      positiontặng nhân ngày 20/10</p>
 
   <div class="chuc" id="loichuc">Đang tải lời chúc...</div>
 
