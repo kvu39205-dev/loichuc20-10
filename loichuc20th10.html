@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tấm lòng nhỏ – Lời chúc lớn</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #ffeef0;
+      color: #333;
+      text-align: center;
+      padding: 40px;
+      overflow-x: hidden;
+    }
+    h1 {
+      color: #d6336c;
+      text-shadow: 1px 1px 2px #fff;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      color: #8a3a57;
+      margin-top: 0;
+      font-size: 0.95em;
+      margin-bottom: 18px;
+    }
+    .chuc {
+      font-size: 1.35em;
+      margin: 30px auto;
+      padding: 20px;
+      background: #fff0f5;
+      border: 1px solid #f8c8dc;
+      border-radius: 10px;
+      max-width: 680px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    input, button, textarea {
+      font-size: 0.95em;
+      border-radius: 8px;
+      padding: 8px;
+      border: 1px solid #f8c8dc;
+      margin: 4px 2px;
+    }
+    button {
+      background: #ff85a2;
+      color: white;
+      cursor: pointer;
+      border: none;
+      transition: 0.22s;
+    }
+    button:hover {
+      background: #ff4f79;
+      transform: translateY(-2px);
+    }
+    .flower {
+      position: fixed;
+      top: -50px;
+      font-size: 20px;
+      pointer-events: none;
+      animation: fall linear forwards;
+    }
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+    /* List panel */
+    #toggleListBtn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: #ffb6c1;
+      border: none;
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      z-index: 1100;
+    }
+    #toggleListBtn:hover { background: #ff4f79; }
+    #listPanel {
+      position: fixed;
+      top: 60px;
+      right: 20px;
+      background: #fff;
+      border: 2px solid #ffb6c1;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      padding: 12px;
+      width: 320px;
+      text-align: left;
+      display: none;
+      z-index: 1100;
+    }
+    #listPanel h2 {
+      font-size: 1.05em;
+      color: #d6336c;
+      text-align: center;
+      margin: 6px 0 10px 0;
+    }
+    #wishList {
+      list-style-type: none;
+      padding: 0;
+      margin: 0 0 8px 0;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+    #wishList li {
+      background: #fff0f5;
+      margin: 6px 0;
+      padding: 8px 36px 8px 8px;
+      border-radius: 6px;
+      position: relative;
+      font-size: 0.95em;
+    }
+    #wishList li button.del {
+      position: absolute;
+      right: 6px;
+      top: 6px;
+      background: #ff6b81;
+      border: none;
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    #addRow {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    #addRow input {
+      flex: 1;
+    }
+    .small { font-size: 0.88em; color: #666; }
+    /* responsive */
+    @media (max-width: 420px) {
+      #listPanel { width: 92%; right: 4%; left: 4%; top: 70px; }
+      .chuc { padding: 14px; font-size: 1.1em; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Tấm lòng nhỏ – Lời chúc lớn</h1>
+  <p class="subtitle">Những lời chúc ấm áp gửi đến cô giáo nhân ngày 20/10</p>
+
+  <div class="chuc" id="loichuc">Đang tải lời chúc...</div>
+
+  <button id="toggleListBtn" onclick="toggleList()">📜 Danh sách lời chúc</button>
+
+  <div id="listPanel" aria-hidden="true">
+    <h2>Danh sách lời chúc</h2>
+    <ul id="wishList"></ul>
+
+    <div id="addRow">
+      <input id="loiMoi" type="text" placeholder="Nhập lời chúc mới..." aria-label="Nhập lời chúc mới"/>
+      <button onclick="themLoiChuc()">➕ Thêm</button>
+    </div>
+    <p class="small">Bạn có thể thêm hoặc xóa lời chúc. Thêm xong sẽ tự hiển thị lời chúc mới.</p>
+  </div>
+
+  <script>
+    let loiChuc = [
+      "Chúc cô luôn mạnh khỏe, hạnh phúc và tràn đầy nhiệt huyết với nghề ạ!",
+      "Nhân ngày 20/10, chúc cô luôn tươi trẻ, yêu đời và thành công trong cuộc sống!",
+      "Chúc cô luôn giữ được nụ cười rạng rỡ và lan tỏa yêu thương đến học trò!",
+      "Cảm ơn cô vì những bài học quý giá — chúc cô thật nhiều niềm vui và bình an!",
+      "Chúc cô có thật nhiều sức khỏe để tiếp tục dìu dắt các thế hệ học sinh!",
+      "Chúc cô ngày 20/10 thật nhiều hoa, quà và niềm vui bất ngờ!",
+      "Chúc cô mãi là ngọn đèn soi sáng cho bao thế hệ học trò!",
+      "Kính chúc cô luôn xinh đẹp, tươi trẻ và gặt hái nhiều thành công mới!",
+      "Chúc cô có một ngày 20/10 thật ý nghĩa và ngập tràn yêu thương từ học trò!",
+      "Em chúc cô luôn tràn đầy năng lượng tích cực và niềm tin vào cuộc sống!"
+    ];
+
+    function hienLoiChucNgauNhien() {
+      if (loiChuc.length === 0) {
+        document.getElementById("loichuc").textContent = "Chưa có lời chúc nào. Vui lòng thêm lời chúc.";
+        return;
+      }
+      const randomIndex = Math.floor(Math.random() * loiChuc.length);
+      const box = document.getElementById("loichuc");
+      box.style.opacity = 0;
+      setTimeout(() => {
+        box.textContent = loiChuc[randomIndex];
+        box.style.opacity = 1;
+      }, 180);
+      taoHoaRoi();
+      capNhatDanhSach();
+    }
+
+    function themLoiChuc() {
+      const input = document.getElementById("loiMoi");
+      const newWish = input.value.trim();
+      if (newWish) {
+        loiChuc.push(newWish);
+        input.value = "";
+        capNhatDanhSach();
+        hienLoiChucNgauNhien();
+      } else {
+        alert("Vui lòng nhập nội dung lời chúc trước khi thêm.");
+      }
+    }
+
+    function xoaLoiChuc(index) {
+      if (confirm("Bạn có chắc muốn xóa lời chúc này không?")) {
+        loiChuc.splice(index, 1);
+        capNhatDanhSach();
+        hienLoiChucNgauNhien();
+      }
+    }
+
+    function capNhatDanhSach() {
+      const list = document.getElementById("wishList");
+      list.innerHTML = "";
+      loiChuc.forEach((wish, i) => {
+        const li = document.createElement("li");
+        li.textContent = wish;
+        const delBtn = document.createElement("button");
+        delBtn.className = "del";
+        delBtn.title = "Xóa";
+        delBtn.textContent = "×";
+        delBtn.onclick = () => xoaLoiChuc(i);
+        li.appendChild(delBtn);
+        list.appendChild(li);
+      });
+    }
+
+    function toggleList() {
+      const panel = document.getElementById("listPanel");
+      const btn = document.getElementById("toggleListBtn");
+      if (panel.style.display === "block") {
+        panel.style.display = "none";
+        panel.setAttribute("aria-hidden", "true");
+        btn.textContent = "📜 Danh sách lời chúc";
+      } else {
+        panel.style.display = "block";
+        panel.setAttribute("aria-hidden", "false");
+        btn.textContent = "✖ Đóng";
+      }
+    }
+
+    function taoHoaRoi() {
+      const hoa = ["🌸", "🌺", "💮", "🌼", "🌷"];
+      const flower = document.createElement("div");
+      flower.classList.add("flower");
+      flower.textContent = hoa[Math.floor(Math.random() * hoa.length)];
+      flower.style.left = Math.random() * 100 + "vw";
+      flower.style.animationDuration = (Math.random() * 3 + 4) + "s";
+      flower.style.fontSize = (Math.random() * 10 + 16) + "px";
+      document.body.appendChild(flower);
+      setTimeout(() => { flower.remove(); }, 7000);
+    }
+
+    // khởi tạo
+    window.onload = function() {
+      capNhatDanhSach();
+      hienLoiChucNgauNhien();
+      setInterval(taoHoaRoi, 800);
+    };
+  </script>
+</body>
+</html>
